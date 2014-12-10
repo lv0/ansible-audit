@@ -24,7 +24,7 @@
 
 - name: deploy audit.rules
   copy: >
-      src=rules.{{ansible_architecture}}.{{audit_rules}}
+      src=rules.{{ansible_architecture}}.{{audit_rules}}.j2
       dest=/etc/audit/rules.d/audit.rules
       backup=yes
   notify: restart auditd
