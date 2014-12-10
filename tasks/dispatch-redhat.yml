@@ -1,0 +1,9 @@
+- name: deploy audit dispatcher configs
+  template: src={{item.src}} dest=/etc/audisp/{{item.dest}} backup=yes
+  notify:
+      - restart auditd
+  with_items:
+      - { src: audispd.conf.j2,       dest: audispd.conf }
+      - { src: audisp-remote.conf.j2, dest: audisp-remote.conf }
+      - { src: au-remote.conf.j2,     dest: au-remote.conf }
+

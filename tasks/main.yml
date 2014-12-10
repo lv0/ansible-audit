@@ -6,6 +6,9 @@
 - include: setup-redhat.yml
   when: ansible_os_family == "RedHat"
 
+- include: setup-debian.yml
+  when: ansible_os_family == "Debian" 
+
 - name: deploy auditd.conf
   template: >
       src=auditd.conf.j2
@@ -13,14 +16,11 @@
       backup=yes
   notify: restart auditd
 
-- name: deploy audit dispatcher configs
-  template: src={{item.src}} dest=/etc/audisp/{{item.dest}} backup=yes
-  notify:
-      - restart auditd
-  with_items:
-      - { src: audispd.conf.j2,       dest: audispd.conf }
-      - { src: audisp-remote.conf.j2, dest: audisp-remote.conf }
-      - { src: au-remote.conf.j2,     dest: au-remote.conf }
+- include: dispatch-redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- include: dispatch-debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: deploy audit.rules
   copy: >
